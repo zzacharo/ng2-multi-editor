@@ -13,4 +13,11 @@ export class ApiService {
       .map(res => res.json())
       .toPromise()
   }
+
+  searchUrl(term: string ,filter: string): Promise<Array<{}>> {
+    return this.http.get('../../assets/mock-data.json/?title=${term}')
+      .map(res => res.json())
+      .toPromise()
+  } 
+
 }
