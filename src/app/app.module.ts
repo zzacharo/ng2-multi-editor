@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MultiEditorComponent } from './multi-editor';
 import { SHARED_SERVICES } from './shared';
+import { AlertModule } from 'ngx-bootstrap';
+import {NgxPaginationModule} from 'ngx-pagination'; 
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { SHARED_SERVICES } from './shared';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AlertModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [
     SHARED_SERVICES
