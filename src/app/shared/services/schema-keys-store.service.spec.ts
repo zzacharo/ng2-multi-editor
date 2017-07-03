@@ -1,0 +1,69 @@
+import { SchemaKeysStoreService } from './schema-keys-store.service';
+import { OrderedSet } from 'immutable';
+
+describe('SchemaKeysStoreService', () => {
+  let service: SchemaKeysStoreService;
+
+  beforeEach(() => {
+    service = new SchemaKeysStoreService();
+  });
+
+  it('should test SchemaKeysStoreService for nested complex array', () => {
+    let schema = {
+      type: 'object',
+      properties: {
+        anArray: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              anObject: {
+                type: 'object',
+                properties: {
+                  prop1: {
+                    type: 'string'
+                  },
+                  prop2: {
+                    type: 'string'
+                  }
+                }
+              },
+              aString: {
+                type: 'string'
+              },
+              innerArray: {
+                componentType: 'table-list',
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    prop1: {
+                      type: 'string'
+                    },
+                    prop2: {
+                      type: 'string'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+    let expectedMap = {
+      '': OrderedSet(['anArray']),
+      '/anArray': OrderedSet(['anObject', 'aString', 'innerArray']),
+      '/anArray/anObject': OrderedSet(['prop1', 'prop2']),
+      '/anArray/innerArray': OrderedSet(['prop1', 'prop2'])
+    };
+
+    service.buildSchemaKeyStore(schema);
+    Object.keys(service.keyStoreMap)
+    .forEach(key => {
+      expect(service.keyStoreMap[key]).toEqual(expectedMap[key]);
+    });
+
+  });
+
+});
