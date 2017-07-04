@@ -4,10 +4,14 @@ import { fromJS, OrderedSet } from 'immutable';
 @Injectable()
 export class SchemaKeysStoreService {
 
-  private schemaSeparator = '/';
+  public schemaSeparator = '/';
   public keyStoreMap: { [path: string]: OrderedSet<string> } = {};
 
   constructor() { }
+
+  public forPath(path: string) {
+    return this.keyStoreMap[`${this.schemaSeparator}${path}`];
+  }
 
   public buildSchemaKeyStore(schema: {}) {
     this.buildSchemaKeyStoreRecursively('', schema);
