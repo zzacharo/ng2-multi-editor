@@ -12,7 +12,13 @@ export class MultiEditorComponent implements OnInit {
 
   records: Array<{}>;
   schema: {};
-  options: Array<{}>;
+  collections = [
+    'CDS',
+    'HEP',
+    'MARVEL'
+  ];
+  filterExpression: string;
+  querystring = '';
 
   constructor(private apiService: ApiService,
     private schemaKeysStoreService: SchemaKeysStoreService) { }
@@ -31,10 +37,6 @@ export class MultiEditorComponent implements OnInit {
         this.records = data.records;
         this.schema = data.schema;
         this.schemaKeysStoreService.buildSchemaKeyStore(this.schema);
-        this.options = this.schemaKeysStoreService.keyStoreMap[''].toArray()
-          .map(option => {
-            return { currentPath: option, nextPath: option};
-          });
     });
   }
 

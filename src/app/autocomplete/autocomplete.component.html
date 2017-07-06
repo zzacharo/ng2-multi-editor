@@ -1,9 +1,5 @@
-<ng-template #noResultsTemplate>
-    <label>No results found</label>
-</ng-template>
-<input [(ngModel)]="selected" (keydown)="checkUserInput($event)" (typeaheadOnSelect)="onModelChange($event)"
-       [typeahead]="options"
-       [optionsListTemplate]="noResultsTemplate"
-       (typeaheadNoResults)="changeTypeaheadNoResults($event)"
-       typeaheadOptionField="nextPath"
-       class="form-control">
+<input [(ngModel)]="selected" [typeahead]="dataSource" (typeaheadNoResults)="typeaheadNoResults = $event"
+       (typeaheadOnSelect)="selectUserInput($event)" (keydown)="onKeyEvent($event)" typeaheadWaitMs=100 class="form-control">
+<div *ngIf="typeaheadNoResults===true">
+    <i class="glyphicon glyphicon-remove"></i> No Results Found
+</div>

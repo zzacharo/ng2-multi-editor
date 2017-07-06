@@ -5,12 +5,15 @@ import { fromJS, OrderedSet } from 'immutable';
 export class SchemaKeysStoreService {
 
   public schemaSeparator = '/';
-  public keyStoreMap: { [path: string]: OrderedSet<string> } = {};
+  public schemaKeyStoreMap: { [path: string]: OrderedSet<string> } = {};
 
   constructor() { }
 
   public forPath(path: string) {
-    return this.keyStoreMap[`${this.schemaSeparator}${path}`];
+    if (path === '') {
+      return this.schemaKeyStoreMap[''].toArray();
+    }
+    return this.schemaKeyStoreMap[`${this.schemaSeparator}${path}`] ? this.schemaKeyStoreMap[`${this.schemaSeparator}${path}`].toArray() : [];
   }
 
   public buildSchemaKeyStore(schema: {}) {
@@ -21,7 +24,7 @@ export class SchemaKeysStoreService {
 
     if (schema['type'] === 'object') {
       let finalKeys = Object.keys(schema['properties']);
-      this.keyStoreMap[path] = fromJS(finalKeys).toOrderedSet();
+      this.schemaKeyStoreMap[path] = fromJS(finalKeys).toOrderedSet();
       finalKeys
       .filter(key => this.isObjectOrArraySchema(schema['properties'][key]))
       .forEach(key => {
@@ -34,7 +37,7 @@ export class SchemaKeysStoreService {
     if (schema['type'] === 'array') {
       if (schema['items']['type'] === 'object') {
         let finalKeys = Object.keys(schema['items']['properties']);
-        this.keyStoreMap[path] = fromJS(finalKeys).toOrderedSet();
+        this.schemaKeyStoreMap[path] = fromJS(finalKeys).toOrderedSet();
         finalKeys
         .filter(key => this.isObjectOrArraySchema(schema['items']['properties'][key]))
         .forEach(key => {

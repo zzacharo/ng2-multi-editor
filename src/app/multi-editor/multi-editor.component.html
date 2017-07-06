@@ -1,5 +1,19 @@
 <pre class="card card-block card-header">Model: {{selected | json}}</pre>
-<autocomplete [options]="options"></autocomplete>
-<ul *ngFor="let record of records">
-  {{record | json}}
-</ul>
+<div class="row">
+  <div class="left col-md-3">
+    <autocomplete (onValueChange)="filterExpression = $event"></autocomplete>
+  </div>
+  <div class="middle col-md-6">
+    <div class="input-group item-group">
+      <input type="text" [(ngModel)]="querystring" class="form-control" name="x" placeholder="Search term...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+    </div>
+    <div>
+      <ul *ngFor="let record of records">
+        <pre>{{record | tagFilter: filterExpression | json}}</pre>
+      </ul>
+    </div>
+  </div>
+</div>
